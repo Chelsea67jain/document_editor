@@ -98,6 +98,16 @@ const Editor = () => {
   socket&& socket.emit('get-document',id);
    
   },[quill,socket,id])
+
+  useEffect(() => {
+    if (socket == null || quill == null) return;
+
+    setInterval(() => {
+     const interval= socket && socket.emit("save-changes", quill.getContents());
+    }, 2000);
+
+   
+  }, [ quill, socket]);
   return (
     <Component>
       <Box
