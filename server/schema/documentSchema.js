@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const documentSchema = mongoose.Schema({
   _id: {
@@ -10,5 +10,5 @@ const documentSchema = mongoose.Schema({
     required: true,
   },
 });
-const document = mongoose.model("document", documentSchema);
-module.exports = document;
+const Document = mongoose.model("document", documentSchema);
+export default Document;
