@@ -31,7 +31,7 @@ var toolbarOptions = [
 ];
 
 const Editor = () => {
-  const [quill, setQuill] = useState();
+  const [quill, setQuill] = useState(null);
   const [socket, setSocket] = useState();
   const {id}=useParams();
   const quillRef = useRef(null);

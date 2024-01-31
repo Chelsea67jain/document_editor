@@ -1,10 +1,22 @@
 //const server=require('socket.io'); This code is used in ES5 but we can use the below code in ES6
 import { Server } from "socket.io";
-import Connection from "./database/db.js";
-import { getDocument,updateDocument } from "./controller/document_controller.js";
+import connectDB from  './database/db.js'
+import { getDocument,updateDocument } from  "./controller/document_controller.js";
+import cors from 'cors';
+import express from 'express';
+import dotenv from 'dotenv';
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+import path from "path";
 
-Connection();
-const PORT=9000;
+const app=express();
+
+connectDB();
+dotenv.config();
+app.use(cors());
+
+const PORT=process.env.PORT
+console.log(`Server connected to port:${PORT}`.yellow.bold)
 
 const io = new Server(PORT, {
   cors: {
@@ -28,6 +40,21 @@ io.on('connection',socket=>{
 
 })
 })
+// Deployement
+
+const __dirname1 =path.resolve();
+
+console.log('Dirname:',__dirname1);
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname1, "/client/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname1, "client", "build", "index.html"));
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("Api is running");
+  });
+}
 
 
 

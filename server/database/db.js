@@ -1,15 +1,21 @@
 import mongoose from "mongoose";
+import colors from 'colors';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const Connection =async (
-  username = "chalsijain38",
-  password = "7KrGzt6oRiiunD2b"
-) => {
-  const URL = `mongodb+srv://chalsijain38:${password}@documenteditor.nouonyi.mongodb.net/?retryWrites=true&w=majority`;
-  try{
-  await mongoose.connect(URL, { useNewUrlParser: true, useUnifiedTopology: true });
-  console.log('Database connected')
-  }catch(e){
-    console.log('Error occured',e);
-  }
-};
-export default Connection;
+const URI = process.env.MONGO_URL;
+
+const connectDB=async()=>{
+try{
+  var conn=await mongoose.connect(URI,{
+useNewUrlParser:true,
+useUnifiedTopology:true
+  })
+  console.log(`Mongodb connected:${conn.connection.host}`.yellow.bold)
+
+}catch(error){
+  console.log(`Error:${error.message}`.red.bold)
+  process.exit();
+}
+}
+export default connectDB;
